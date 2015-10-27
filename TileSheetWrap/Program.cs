@@ -1,51 +1,99 @@
-﻿using paujo.GameUtility;
+﻿using System;
+
+using paujo.GameUtility;
 
 namespace TileSheetWrap {
   public class Program {
     static void Main(string[] args) {
-      TileSheet tileSheet = new TileSheet();
-      tileSheet.TextureKey = "FirstGame - Girl Farmer";
-      tileSheet.FrameWidth = 32;
-      tileSheet.FrameHeight = 48;
-
-      Animation girlDown = new Animation();
-      girlDown.AddFrame(0, 200.0);
-      girlDown.AddFrame(1, 200.0);
-      girlDown.AddFrame(2, 200.0);
-      girlDown.AddFrame(1, 200.0);
-
-      Animation girlLeft = new Animation();
-      girlLeft.AddFrame(3, 200.0);
-      girlLeft.AddFrame(4, 200.0);
-      girlLeft.AddFrame(5, 200.0);
-      girlLeft.AddFrame(4, 200.0);
-
-      Animation girlRight = new Animation();
-      girlRight.AddFrame(6, 200.0);
-      girlRight.AddFrame(7, 200.0);
-      girlRight.AddFrame(8, 200.0);
-      girlRight.AddFrame(7, 200.0);
-
-      Animation girlUp = new Animation();
-      girlUp.AddFrame(9, 200.0);
-      girlUp.AddFrame(10, 200.0);
-      girlUp.AddFrame(11, 200.0);
-      girlUp.AddFrame(10, 200.0);
-
-      tileSheet.AddAnimation("girlDown", girlDown);
-      tileSheet.AddAnimation("girlLeft", girlLeft);
-      tileSheet.AddAnimation("girlRight", girlRight);
-      tileSheet.AddAnimation("girlUp", girlUp);
-
-      TileSheet.WriteToFile("girlTileSheet.json", tileSheet);
-
-      TileSheet inSheet = TileSheet.ReadFromFile("girlTileSheet.json");
-      if (inSheet != null) {
-	System.Console.WriteLine(inSheet.TextureKey + " " + inSheet.FrameWidth + " " + inSheet.FrameHeight);
-	foreach (var key in inSheet.AnimationKeys)
-	  System.Console.WriteLine(key);
-	System.Console.WriteLine(inSheet.AnimationCount);
+      string response;
+      bool boolResponse;
+	
+      TileSheet sheet = GetTileSheetFromUser();
+      if (sheet != null) {
+	pln(" -- Animations --");
+	pln("Add Animation (True/False): ");
+	Boolean.TryParse(getLine(), out boolResponse);
+	while (boolResponse) {
+	  Animation newAnim = GetAnimationFromUser();
+	  if (newAnim != null) {
+	    pnn("AnimationKey: ");
+	    response = getLine();
+	    if (response.Length > 0)
+	      sheet.AddAnimation(response, newAnim);
+	    else
+	      sheet.AddAnimation(newAnim);
+	  }
+	  pln("Add Animation (True/False): ");
+	  Boolean.TryParse(getLine(), out boolResponse);
+	}
+	
+	pnn("Output base file name: ");
+	response = getLine();
+	if (response.Length > 0)
+	  TileSheet.WriteToFile(response + ".jts", sheet);
+	pln("Done.");
       }
+    }
+
+
+    public static Animation GetAnimationFromUser() {
+      pln(" -- New Animation --");
+      string response;
+      int numResponse;
+      double dblResponse;
+      Animation res = new Animation();
+
+      pnn("Repeatable (yes/no): ");
+      response = getLine();
+      if (response == "no")
+	res.Repeatable = false;
+      
+      do {
+	pnn("Frame (-1 to end): ");
+	Int32.TryParse(getLine(), out numResponse);
+	if (numResponse >= 0) {
+	  pnn("Frame Length (in ms): ");
+	  Double.TryParse(getLine(), out dblResponse);
+	  res.AddFrame(numResponse, dblResponse);
+	}
+      } while (numResponse >= 0);
+
+      if (res.Frames.Count > 0)
+	return res;
+      return null;
+    }
+
+
+    public static TileSheet GetTileSheetFromUser() {
+      pln(" -- Tile Sheet --");
+      TileSheet tileSheet = new TileSheet();
+      pnn("TextureKey: ");
+      string response = getLine();
+      tileSheet.TextureKey = response;
+      
+      pnn("FrameWidth: ");
+      int numResponse;
+      Int32.TryParse(getLine(), out numResponse);
+      tileSheet.FrameWidth = numResponse;
+      
+      pnn("FrameHeight: ");
+      Int32.TryParse(getLine(), out numResponse);
+      tileSheet.FrameHeight = numResponse;
+      
+      return tileSheet;
+    }
+
+
+    public static void pln(string msg) {
+      System.Console.WriteLine(msg);
+    }
+
+    public static void pnn(string msg) {
+      System.Console.Write(msg);
+    }
+
+    public static string getLine() {
+      return System.Console.ReadLine();
     }
   }
 }
