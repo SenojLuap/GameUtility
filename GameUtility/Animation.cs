@@ -16,6 +16,10 @@ namespace paujo.GameUtility {
       get; set;
     }
 
+    public bool Repeatable {
+      get; set;
+    }
+
     
     [JsonIgnore]
     public double TotalLength {
@@ -31,12 +35,23 @@ namespace paujo.GameUtility {
     public Animation() {
       Frames = new List<int>();
       FrameLengths = new List<double>();
+      Repeatable = true;
     }
 
 
     public void AddFrame(int frame, double length) {
       Frames.Add(frame);
       FrameLengths.Add(length);
+    }
+
+
+    public int GetFrameFromTime(double time) {
+      double runningTime = 0.0;
+      for (int i = 0; i < Frames.Count; i++) {
+	runningTime += FrameLengths[i];
+	if (runningTime > time) return i;
+      }
+      return Frames.Count - 1;
     }
   }
   
