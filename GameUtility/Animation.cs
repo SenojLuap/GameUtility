@@ -4,6 +4,8 @@ using System.Collections.Generic;
 
 using Newtonsoft.Json;
 
+using Microsoft.Xna.Framework;
+
 namespace paujo.GameUtility {
   
   public class Animation {
@@ -52,6 +54,52 @@ namespace paujo.GameUtility {
 	if (runningTime > time) return i;
       }
       return Frames.Count - 1;
+    }
+
+
+    public AnimationHelper GetHelper() {
+      return new AnimationHelper(this);
+    }
+  }
+
+
+  public class AnimationHelper {
+
+    public Animation Animation {
+      get; set; 
+    }
+
+    
+    public double RunningTime {
+      get; set;
+    }
+
+    
+    [JsonIgnore]
+    public bool Completed {
+      get {
+	if (Animation.Repeatable) return false;
+	return RunningTime >= Animation.TotalLength;
+      }
+    }
+
+
+    public AnimationHelper(Animation animation) {
+      Animation = animation;
+    }
+
+
+    public void Update(GameTime gameTime) {
+      if (!Completed) {
+	RunningTime += gameTime.ElapsedGameTime.TotalMilliseconds;
+	if (Animation.Repeatable && RunningTime >= Animation.TotalLength)
+	  RunningTime -= Animation.TotalLength;
+      }
+    }
+
+
+    public int Frame() {
+      return Animation.GetFrameFromTime(RunningTime);
     }
   }
   

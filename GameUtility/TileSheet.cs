@@ -97,23 +97,12 @@ namespace paujo.GameUtility {
     }
 
 
-    public virtual void Draw(SpriteBatch spriteBatch, Vector2 pos, int frame, float scale = 1.0f, float layer = 0f) {
+    public virtual void Draw(SpriteBatch spriteBatch, Vector2 pos, int frame, float scale = 1.0f) {
       Texture2D texture = GetTexture(TextureKey);
       if (texture != null) {
 	Rectangle srcRect = GetSourceRectangle(frame);
-	spriteBatch.Draw(texture, position: pos, sourceRectangle: srcRect, scale: new Vector2(scale, scale), color: Color.White,
-			 layerDepth: layer);
+	spriteBatch.Draw(texture, position: pos, sourceRectangle: srcRect, scale: new Vector2(scale, scale), color: Color.White);
       }
-    }
-
-
-    public virtual void Draw(SpriteBatch spriteBatch, int x, int y, int frame, float scale = 1.0f, float layer = 0f) {
-      Draw(spriteBatch, new Vector2((float)x, (float)y), frame, scale, layer);
-    }
-
-
-    public virtual void Draw(SpriteBatch spriteBatch, float x, float y, int frame, float scale = 1.0f, float layer = 0f) {
-      Draw(spriteBatch, new Vector2(x, y), frame, scale, layer);
     }
 
 
@@ -124,34 +113,6 @@ namespace paujo.GameUtility {
     }
 
 
-    public IDrawable GetSpriteDrawable(int frame) {
-      return new StaticSprite(this, frame);
-    }
-
-
-    public IDrawable GetAnimationDrawable(int animationIndex, double timeScale = 1.0) {
-      if (animationIndex < Animations.Count)
-	return new AnimatedSprite(this, animationIndex, timeScale);
-      return null;
-    }
-
-    public IDrawable GetAnimationDrawable(string animationKey, double timeScale = 1.0) {
-      if (AnimationLookup.ContainsKey(animationKey)) {
-	int index = AnimationLookup[animationKey];
-	return new AnimatedSprite(this, index, timeScale);
-      }
-      return null;
-    }
-
-
-    public IDrawable GetAnimationDrawable(Animation anim, double timeScale = 1.0) {
-      int index = Animations.IndexOf(anim);
-      if (index >= 0)
-	return new AnimatedSprite(this, index, timeScale);
-      return null;
-    }
-
-    
     public static void WriteToFile(string outputFile, TileSheet tileSheet) {
       string serTileSheet = JsonConvert.SerializeObject(tileSheet, Formatting.Indented);
       File.WriteAllText(outputFile, serTileSheet);
@@ -174,98 +135,4 @@ namespace paujo.GameUtility {
   }
 
 
-  public class StaticSprite : IDrawable {
-
-    public TileSheet TileSheet {
-      get; set;
-    }
-
-    public int Frame {
-      get; set;
-    }
-
-
-    public StaticSprite(TileSheet tileSheet, int frame) {
-      TileSheet = tileSheet;
-      Frame = frame;
-    }
-
-    public void Update(GameTime gameTime) {
-      // Do nothing.
-    }
-
-
-    public void Draw(SpriteBatch spriteBatch, Vector2 pos, float scale, float layer) {
-      TileSheet.Draw(spriteBatch, pos, Frame, scale, layer);
-    }
-  }
-
-
-  public class AnimatedSprite : IDrawable {
-
-    public TileSheet TileSheet {
-      get; set;
-    }
-
-    public int AnimationIndex {
-      get; set;
-    }
-
-    public double RunningTime {
-      get; set;
-    }
-
-    public double TimeScale {
-      get; set;
-    }
-
-    public bool Complete {
-      get; set;
-    }
-
-    public Animation Animation {
-      get {
-	if (TileSheet != null && AnimationIndex >= 0)
-	  return TileSheet.Animations[AnimationIndex];
-	return null;
-      }
-    }
-
-
-    public AnimatedSprite(TileSheet tileSheet, int animationIndex, double timeScale = 1.0) {
-      TileSheet = tileSheet;
-      AnimationIndex = animationIndex;
-      RunningTime = 0.0;
-      TimeScale = 1.0;
-    }
-
-
-    public void Update(GameTime gameTime) {
-      if (!Complete) {
-	RunningTime += (gameTime.ElapsedGameTime.TotalMilliseconds * TimeScale);
-	if (RunningTime >= Animation.TotalLength) {
-	  if (Animation.Repeatable)
-	    RunningTime -= Animation.TotalLength;
-	  else
-	    Complete = true;
-	}
-      }
-    }
-
-
-    public void Draw(SpriteBatch spriteBatch, Vector2 pos, float scale, float depth) {
-      int frame = Animation.GetFrameFromTime(RunningTime);
-      if (frame >= 0)
-	TileSheet.Draw(spriteBatch, pos, frame, scale, depth);
-    }
-
-
-    public void Reset() {
-      RunningTime = 0.0;
-      Complete = false;
-    }
-
-
-    
-  }
 }
