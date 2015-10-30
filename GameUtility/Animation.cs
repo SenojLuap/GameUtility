@@ -51,9 +51,9 @@ namespace paujo.GameUtility {
       double runningTime = 0.0;
       for (int i = 0; i < Frames.Count; i++) {
 	runningTime += FrameLengths[i];
-	if (runningTime > time) return i;
+	if (runningTime > time) return Frames[i];
       }
-      return Frames.Count - 1;
+      return Frames[Frames.Count - 1];
     }
 
 

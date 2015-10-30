@@ -1,7 +1,7 @@
 ﻿using System;
 
 namespace paujo.GameUtility {
-  class Misc {
+  public class Misc {
     public static void pln(string msg) {
       System.Console.WriteLine(msg);
     }
