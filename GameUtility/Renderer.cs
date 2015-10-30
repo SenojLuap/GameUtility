@@ -21,10 +21,12 @@ namespace paujo.GameUtility {
 
 
     public void AddJob(IRenderJob job, int layer) {
-      List<IRenderJob> layerList = RenderJobs[layer];
-      if (layerList == null) {
+      List<IRenderJob> layerList;
+      if (!RenderJobs.ContainsKey(layer)) {
 	layerList = new List<IRenderJob>();
 	RenderJobs.Add(layer, layerList);
+      } else {
+	layerList = RenderJobs[layer];
       }
       layerList.Add(job);
     }

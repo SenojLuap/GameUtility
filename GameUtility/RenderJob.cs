@@ -25,7 +25,7 @@ namespace paujo.GameUtility {
     
     public float Scale {
       get; set;
-    }
+    } = 1.0f;
 
 
     public float Rot { // Unimplemented

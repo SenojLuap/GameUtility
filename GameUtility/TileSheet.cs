@@ -109,7 +109,7 @@ namespace paujo.GameUtility {
     public virtual Rectangle GetSourceRectangle(int frame) {
       int xPos = frame % SizeInFrames.X;
       int yPos = frame / SizeInFrames.X;
-      return new Rectangle(xPos * FrameWidth, yPos * FrameWidth, FrameWidth, FrameWidth);
+      return new Rectangle(xPos * FrameWidth, yPos * FrameHeight, FrameWidth, FrameHeight);
     }
 
 
