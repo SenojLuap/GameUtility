@@ -57,13 +57,10 @@ namespace paujo.GameUtility {
     }
 
 
-    public AnimationHelper GetHelper() {
-      return new AnimationHelper(this);
-    }
   }
 
 
-  public class AnimationHelper {
+  public class AnimationHelper : TileSheetHelper {
 
     public Animation Animation {
       get; set; 
@@ -74,7 +71,7 @@ namespace paujo.GameUtility {
       get; set;
     }
 
-    
+
     [JsonIgnore]
     public bool Completed {
       get {
@@ -84,12 +81,13 @@ namespace paujo.GameUtility {
     }
 
 
-    public AnimationHelper(Animation animation) {
+    public AnimationHelper(TileSheet tileSheet, Animation animation, Vector2? pos = null, float? scale = 1f)
+    : base(tileSheet, pos, scale) {
       Animation = animation;
     }
 
 
-    public void Update(GameTime gameTime) {
+    public override void Update(GameTime gameTime) {
       if (!Completed) {
 	RunningTime += gameTime.ElapsedGameTime.TotalMilliseconds;
 	if (Animation.Repeatable && RunningTime >= Animation.TotalLength)
@@ -98,9 +96,11 @@ namespace paujo.GameUtility {
     }
 
 
-    public int Frame() {
+    public override int GetFrame() {
       return Animation.GetFrameFromTime(RunningTime);
     }
+
+
   }
   
 }

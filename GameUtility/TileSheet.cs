@@ -131,8 +131,21 @@ namespace paujo.GameUtility {
       }
       return res;
     }
+    
+    public IDrawHelper GetAnimationHelper(string animationKey) {
+      Animation anim = AnimationByKey(animationKey);
+      if (anim != null)
+	return GetAnimationHelper(anim);
+      return null;
+    }
+    
+    
+    public IDrawHelper GetAnimationHelper(Animation anim) {
+      return new AnimationHelper(this, anim);
+    }
 
+    public IDrawHelper GetSpriteHelper(int frame) {
+      return new SpriteHelper(this, frame);
+    }
   }
-
-
 }
