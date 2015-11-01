@@ -8,5 +8,10 @@ namespace paujo.GameUtility {
     public static void pnn(string msg) {
       System.Console.Write(msg);
     }
+
+    public static bool Eq(double left, double right, double epsilon = double.Epsilon) {
+      return Math.Abs(left - right) < epsilon;
+    }
   }
 }
+
