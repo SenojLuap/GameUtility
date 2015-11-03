@@ -18,7 +18,7 @@ namespace paujo.GameUtility {
     }
 
 
-    public Vector2 Pos {
+    public Point Pos {
       get; set;
     }
 

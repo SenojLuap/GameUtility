@@ -7,7 +7,7 @@ namespace paujo.GameUtility {
       get; set;
     }
 
-    public Vector2 Pos {
+    public Point Pos {
       get; set;
     }
 
@@ -15,11 +15,11 @@ namespace paujo.GameUtility {
       get; set;
     }
 
-    public TileSheetHelper(TileSheet tileSheet, Vector2? pos = null, float? scale = 1f) {
+    public TileSheetHelper(TileSheet tileSheet, Point? pos = null, float? scale = 1f) {
       TileSheet = tileSheet;
       
-      if (pos == null) pos = new Vector2(0f, 0f);
-      Pos = (Vector2)pos;
+      if (pos == null) pos = new Point(0, 0);
+      Pos = (Point)pos;
       Scale = (float)scale;
     }
 

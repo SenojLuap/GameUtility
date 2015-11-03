@@ -7,7 +7,7 @@ namespace paujo.GameUtility {
       get; set;
     }
 
-    public SpriteHelper(TileSheet tileSheet, int frame, Vector2? pos = null, float? scale = 1f) : base(tileSheet, pos, scale) {
+    public SpriteHelper(TileSheet tileSheet, int frame, Point? pos = null, float? scale = 1f) : base(tileSheet, pos, scale) {
       Frame = frame;
     }
 

@@ -96,7 +96,8 @@ namespace paujo.GameUtility {
       return null;
     }
 
-
+    
+    /*
     public virtual void Draw(SpriteBatch spriteBatch, Vector2 pos, int frame, float scale = 1.0f) {
       Texture2D texture = GetTexture(TextureKey);
       if (texture != null) {
@@ -104,12 +105,27 @@ namespace paujo.GameUtility {
 	spriteBatch.Draw(texture, position: pos, sourceRectangle: srcRect, scale: new Vector2(scale, scale), color: Color.White);
       }
     }
+    */
+
+
+    public void Draw(SpriteBatch spriteBatch, Point pos, int frame, float scale = 1.0f) {
+      Texture2D texture = GetTexture(TextureKey);
+      if (texture == null) return;
+      Rectangle srcRect = GetSourceRectangle(frame);
+      Rectangle destRect = GetDestinationRectangle(pos, scale);
+      spriteBatch.Draw(texture, sourceRectangle: srcRect, destinationRectangle: destRect, color: Color.White);
+    }
 
 
     public virtual Rectangle GetSourceRectangle(int frame) {
       int xPos = frame % SizeInFrames.X;
       int yPos = frame / SizeInFrames.X;
       return new Rectangle(xPos * FrameWidth, yPos * FrameHeight, FrameWidth, FrameHeight);
+    }
+
+
+    public Rectangle GetDestinationRectangle(Point pos, float scale) {
+      return new Rectangle(pos.X, pos.Y, Convert.ToInt32(FrameWidth * scale), Convert.ToInt32(FrameHeight * scale));
     }
 
 

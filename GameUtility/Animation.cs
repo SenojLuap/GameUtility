@@ -81,7 +81,7 @@ namespace paujo.GameUtility {
     }
 
 
-    public AnimationHelper(TileSheet tileSheet, Animation animation, Vector2? pos = null, float? scale = 1f)
+    public AnimationHelper(TileSheet tileSheet, Animation animation, Point? pos = null, float? scale = 1f)
     : base(tileSheet, pos, scale) {
       Animation = animation;
     }
