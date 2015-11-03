@@ -23,7 +23,7 @@ namespace paujo.GameUtility {
   }
 
 
-  public class PixelRenderJob : IRenderJob {
+  public struct PixelRenderJob : IRenderJob {
 
     public Point Pos {
       get; set;
@@ -39,16 +39,24 @@ namespace paujo.GameUtility {
       Color = (Color)color;
     }
 
-    public virtual void Draw(SpriteBatch spriteBatch) {
+    public void Draw(SpriteBatch spriteBatch) {
       if (Primitives.Initialized)
 	spriteBatch.Draw(Primitives.Pixel, new Rectangle(Pos.X, Pos.Y, 1, 1), Color);
     }
   }
 
 
-  public class LineRenderJob : PixelRenderJob {
+  public struct LineRenderJob : IRenderJob {
+
+    public Point Pos {
+      get; set;
+    }
 
     public Point Pos2 {
+      get; set;
+    }
+
+    public Color Color {
       get; set;
     }
 
@@ -56,13 +64,16 @@ namespace paujo.GameUtility {
       get; set;
     }
 
-    public LineRenderJob(Point pos, Point pos2, int? thickness = 1, Color? color = null) : base (pos, color) {
+    public LineRenderJob(Point pos, Point pos2, int thickness = 1, Color? color = null) {
+      if (color == null) color = Color.White;
+      Pos = pos;
       Pos2 = pos2;
-      Thickness = (int)thickness;
+      Color = (Color)color;
+      Thickness = thickness;
     }
 
 
-    public override void Draw(SpriteBatch spriteBatch ) {
+    public void Draw(SpriteBatch spriteBatch ) {
       if (!Primitives.Initialized) {
 	Misc.pln("Attempted to draw primitive without initializing!");
 	return;
@@ -80,7 +91,7 @@ namespace paujo.GameUtility {
   }
 
 
-  public class RectRenderJob : IRenderJob {
+  public struct RectRenderJob : IRenderJob {
 
     public Rectangle Rectangle {
       get; set;

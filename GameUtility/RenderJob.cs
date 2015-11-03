@@ -6,7 +6,7 @@ namespace paujo.GameUtility {
     void Draw(SpriteBatch spriteBatch);
   }
 
-  public class TileSheetRenderJob : IRenderJob {
+  public struct TileSheetRenderJob : IRenderJob {
 
     public TileSheet TileSheet {
       get; set;
@@ -25,11 +25,28 @@ namespace paujo.GameUtility {
     
     public float Scale {
       get; set;
-    } = 1.0f;
+    }
 
 
     public float Rot { // Unimplemented
       get; set;
+    }
+
+
+    public float Depth {
+      get; set;
+    }
+
+
+    public TileSheetRenderJob(TileSheet tileSheet, int frame, Point? pos = null, float scale = 1f, float rotation = 0f,
+			      float depth = 1f) {
+      if (pos == null) pos = new Point(0, 0);
+      TileSheet = tileSheet;
+      Frame = frame;
+      Pos = (Point)pos;
+      Scale = scale;
+      Rot = rotation;
+      Depth = depth;
     }
 
     
