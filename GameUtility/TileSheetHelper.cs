@@ -15,12 +15,17 @@ namespace paujo.GameUtility {
       get; set;
     }
 
-    public TileSheetHelper(TileSheet tileSheet, Point? pos = null, float? scale = 1f) {
+    public float Depth {
+      get; set;
+    }
+
+    public TileSheetHelper(TileSheet tileSheet, Point? pos = null, float scale = 1f, float depth = 1f) {
       TileSheet = tileSheet;
       
       if (pos == null) pos = new Point(0, 0);
       Pos = (Point)pos;
-      Scale = (float)scale;
+      Scale = scale;
+      Depth = depth;
     }
 
 
@@ -36,6 +41,7 @@ namespace paujo.GameUtility {
       job.Frame = GetFrame();
       job.Pos = Pos;
       job.Scale = Scale;
+      job.Depth = Depth;
       return job;
     }
   }

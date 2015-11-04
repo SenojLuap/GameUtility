@@ -35,7 +35,7 @@ namespace paujo.GameUtility {
     public void Draw() {
       foreach (KeyValuePair<int, List<IRenderJob>> keyValue in RenderJobs) {
 	SpriteBatch spriteBatch = new SpriteBatch(Game.GraphicsDevice);
-	spriteBatch.Begin();
+	spriteBatch.Begin(sortMode: SpriteSortMode.FrontToBack);
 	foreach (var renderJob in keyValue.Value) {
 	  renderJob.Draw(spriteBatch);
 	}

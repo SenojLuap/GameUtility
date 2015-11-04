@@ -51,7 +51,7 @@ namespace paujo.GameUtility {
 
     
     public void Draw(SpriteBatch spriteBatch) {
-      TileSheet.Draw(spriteBatch, Pos, Frame, Scale);
+      TileSheet.Draw(spriteBatch, Pos, Frame, Scale, Depth);
     }
   }
 }

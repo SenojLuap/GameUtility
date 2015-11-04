@@ -108,12 +108,12 @@ namespace paujo.GameUtility {
     */
 
 
-    public void Draw(SpriteBatch spriteBatch, Point pos, int frame, float scale = 1.0f) {
+    public void Draw(SpriteBatch spriteBatch, Point pos, int frame, float scale = 1.0f, float depth = 1f) {
       Texture2D texture = GetTexture(TextureKey);
       if (texture == null) return;
       Rectangle srcRect = GetSourceRectangle(frame);
       Rectangle destRect = GetDestinationRectangle(pos, scale);
-      spriteBatch.Draw(texture, sourceRectangle: srcRect, destinationRectangle: destRect, color: Color.White);
+      spriteBatch.Draw(texture, sourceRectangle: srcRect, destinationRectangle: destRect, color: Color.White, layerDepth: depth);
     }
 
 
