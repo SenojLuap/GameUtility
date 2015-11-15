@@ -51,6 +51,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Animation.cs" />
+    <Compile Include="AnimationSet.cs" />
+    <Compile Include="Direction.cs" />
     <Compile Include="IDrawHelper.cs" />
     <Compile Include="Misc.cs" />
     <Compile Include="Primitives.cs" />
