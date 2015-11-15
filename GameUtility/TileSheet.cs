@@ -35,6 +35,14 @@ namespace paujo.GameUtility {
       get; set;
     }
 
+    public Dictionary<int, Point> FrameOffsets {
+      get; set;
+    }
+
+    public Point DefaultFrameOffset {
+      get; set;
+    }
+
     [JsonIgnore]
     public Dictionary<string, int>.KeyCollection AnimationKeys {
       get {
@@ -42,25 +50,46 @@ namespace paujo.GameUtility {
       }
     }
 
+    [JsonIgnore]
+    public Point? _sizeInFrames = null;
 
     [JsonIgnore]
     public Point SizeInFrames {
       get {
-	Texture2D texture = GetTexture(TextureKey);
-	if (texture == null) return new Point(-1, -1);
-	int width = texture.Width / FrameWidth;
-	int height = texture.Height / FrameHeight;
-	return new Point(width, height);
+	if (_sizeInFrames == null) {
+	  Texture2D texture = GetTexture(TextureKey);
+	  if (texture == null) {
+	    _sizeInFrames = new Point(-1, -1);
+	  } else {
+	    int width = texture.Width / FrameWidth;
+	    int height = texture.Height / FrameHeight;
+	    _sizeInFrames = new Point(width, height);
+	  }
+	}
+	return (Point)_sizeInFrames;
+      }
+      set {
+	_sizeInFrames = value;
       }
     }
 
     [JsonIgnore]
+    public int _tileCount = -1;
+
+    [JsonIgnore]
     public int TileCount {
       get {
-	Point p = SizeInFrames;
-	if (p.X >= 0 && p.Y >= 0)
-	  return p.X * p.Y;
-	return 0;
+	if (_tileCount < 0) {
+	  Point p = SizeInFrames;
+	  if (p.X >= 0 && p.Y >= 0)
+	    _tileCount = p.X * p.Y;
+	  else
+	    _tileCount = 0;
+	}
+	return _tileCount;
+      }
+      set {
+	_tileCount = value;
       }
     }
 
@@ -75,6 +104,10 @@ namespace paujo.GameUtility {
       GetTexture = delegate(string s) { return null; };
       Animations = new List<Animation>();
       AnimationLookup = new Dictionary<string, int>();
+      FrameOffsets = new Dictionary<int, Point>();
+      DefaultFrameOffset = new Point(0, 0);
+      FrameWidth = 1;
+      FrameHeight = 1;
     }
 
 
@@ -96,18 +129,14 @@ namespace paujo.GameUtility {
       return null;
     }
 
-    
-    /*
-    public virtual void Draw(SpriteBatch spriteBatch, Vector2 pos, int frame, float scale = 1.0f) {
-      Texture2D texture = GetTexture(TextureKey);
-      if (texture != null) {
-	Rectangle srcRect = GetSourceRectangle(frame);
-	spriteBatch.Draw(texture, position: pos, sourceRectangle: srcRect, scale: new Vector2(scale, scale), color: Color.White);
-      }
+
+    public Point FrameOffset(int frame) {
+      if (FrameOffsets.ContainsKey(frame))
+	return FrameOffsets[frame];
+      return DefaultFrameOffset;
     }
-    */
 
-
+    
     public void Draw(SpriteBatch spriteBatch, Point pos, int frame, float scale = 1.0f, float depth = 1f) {
       Texture2D texture = GetTexture(TextureKey);
       if (texture == null) return;

@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TileSheetWrap", "..\TileShe
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AnimationSetWrap", "..\AnimationSetWrap\AnimationSetWrap.csproj", "{9417110B-2E83-4985-98C5-B0D0AA70CB9B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TileSheetEditor", "..\TileSheetEditor\TileSheetEditor.csproj", "{C65BCCB8-C24A-45A0-978C-5206263B2203}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{9417110B-2E83-4985-98C5-B0D0AA70CB9B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9417110B-2E83-4985-98C5-B0D0AA70CB9B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9417110B-2E83-4985-98C5-B0D0AA70CB9B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C65BCCB8-C24A-45A0-978C-5206263B2203}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C65BCCB8-C24A-45A0-978C-5206263B2203}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C65BCCB8-C24A-45A0-978C-5206263B2203}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C65BCCB8-C24A-45A0-978C-5206263B2203}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
