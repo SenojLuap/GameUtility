@@ -7,92 +7,58 @@ using Newtonsoft.Json;
 namespace paujo.GameUtility {
   public class AnimationSet {
 
-    public string[] StaticAnimations {
+    public int[] StaticFrames {
       get; private set;
     }
 
-    public string[] SlowAnimations {
+    public string[] MovingAnimations {
       get; private set;
     }
 
-    public string[] FastAnimations {
-      get; private set;
+    public void SetStaticFrames(int north, int east, int south, int west) {
+      StaticFrames = new int[4];
+      StaticFrames[0] = north;
+      StaticFrames[1] = east;
+      StaticFrames[2] = south;
+      StaticFrames[3] = west;
+    }
+
+    public void SetMovingAnimations(string north, string east, string south,
+				    string west) {
+      MovingAnimations = new string[4];
+      MovingAnimations[0] = north;
+      MovingAnimations[1] = east;
+      MovingAnimations[2] = south;
+      MovingAnimations[3] = west;
     }
 
 
-    public void SetStaticAnimations(string northAnim, string eastAnim,
-				    string southAnim, string westAnim) {
-      StaticAnimations = new string[4];
-      StaticAnimations[0] = northAnim;
-      StaticAnimations[2] = southAnim;
-      StaticAnimations[3] = westAnim;
-    }
-
-
-    public void SetSlowAnimations(string northAnim, string eastAnim,
-				  string southAnim, string westAnim) {
-      SlowAnimations = new string[4];
-      SlowAnimations[0] = northAnim;
-      SlowAnimations[1] = eastAnim;
-      SlowAnimations[2] = southAnim;
-      SlowAnimations[3] = westAnim;
-    }
-
-    
-    public void SetFastAnimations(string northAnim, string eastAnim,
-				  string southAnim, string westAnim) {
-      FastAnimations = new string[4];
-      FastAnimations[0] = northAnim;
-      FastAnimations[1] = eastAnim;
-      FastAnimations[2] = southAnim;
-      FastAnimations[3] = westAnim;
-    }
-
-    
-    public string GetStaticAnimation(Direction dir) {
-      if (StaticAnimations == null)
-	return "";
-      switch (dir) {
+    public int GetStaticFrame(Direction direction) {
+      if (StaticFrames == null) return -1;
+      switch (direction) {
       case Direction.North:
-	return StaticAnimations[0];
+	return StaticFrames[0];
       case Direction.East:
-	return StaticAnimations[1];
+	return StaticFrames[1];
       case Direction.West:
-	return StaticAnimations[3];
+	return StaticFrames[3];
       default:
-	return StaticAnimations[2];
-      }
-    }
-    
-    
-    public string GetSlowAnimation(Direction dir) {
-      if (SlowAnimations == null)
-	return GetStaticAnimation(dir);
-      switch (dir) {
-      case Direction.North:
-	return SlowAnimations[0];
-      case Direction.East:
-	return SlowAnimations[1];
-      case Direction.West:
-	return SlowAnimations[3];
-      default:
-	return SlowAnimations[2];
+	return StaticFrames[2];
       }
     }
 
 
-    public string GetFastAnimation(Direction dir) {
-      if (FastAnimations == null)
-	return GetSlowAnimation(dir);
-      switch (dir) {
+    public string GetMovingAnimations(Direction direction) {
+      if (MovingAnimations ==  null) return "";
+      switch (direction) {
       case Direction.North:
-	return FastAnimations[0];
+	return MovingAnimations[0];
       case Direction.East:
-	return FastAnimations[1];
+	return MovingAnimations[1];
       case Direction.West:
-	return FastAnimations[3];
+	return MovingAnimations[3];
       default:
-	return FastAnimations[2];
+	return MovingAnimations[2];
       }
     }
 
