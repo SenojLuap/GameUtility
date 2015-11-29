@@ -10,19 +10,19 @@ namespace paujo.GameUtility {
     }
 
     
-    public double Radius {
+    public int Radius {
       get; set;
     }
 
     
     public double Area {
       get {
-	return Math.PI * Radius * Radius;
+	return Math.PI * (double)Radius * (double)Radius;
       }
     }
 
     
-    public Circle(Point center, double radius) {
+    public Circle(Point center, int radius) {
       this.Center = center;
       this.Radius = radius;
     }
