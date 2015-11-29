@@ -29,6 +29,13 @@ namespace paujo.GameUtility {
     public static Vector2 PointToVector2(Point point) {
       return new Vector2(point.X, point.Y);
     }
+
+    
+    public static double Distance(Point p0, Point p1) {
+      Vector2 v0 = PointToVector2(p0);
+      Vector2 v1 = PointToVector2(p1);
+      return Vector2.Distance(v0, v1);
+    }
   }
 }
 
