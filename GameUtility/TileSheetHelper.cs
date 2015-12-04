@@ -15,8 +15,17 @@ namespace paujo.GameUtility {
       get; set;
     }
 
+
+    private float _depth;
     public float Depth {
-      get; set;
+      get {
+	return _depth;
+      }
+      set {
+	_depth = value;
+	if (_depth < 0.0f)
+	  _depth = 0.0f;
+      }
     }
 
     public TileSheetHelper(TileSheet tileSheet, Point? pos = null, float scale = 1f, float depth = 1f) {
