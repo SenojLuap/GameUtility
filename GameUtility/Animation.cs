@@ -96,6 +96,15 @@ namespace paujo.GameUtility {
     }
 
 
+    public override void Update(double deltaTime) {
+      if (!Completed) {
+	RunningTime += deltaTime;
+	if (Animation.Repeatable && RunningTime >= Animation.TotalLength)
+	  RunningTime -= Animation.TotalLength;
+      }
+    }
+
+
     public override int GetFrame() {
       return Animation.GetFrameFromTime(RunningTime);
     }

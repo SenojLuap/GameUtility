@@ -44,6 +44,10 @@ namespace paujo.GameUtility {
       // Do nothing
     }
 
+    public virtual void Update(double deltaTime) {
+      // Do nothing
+    }
+
     public virtual IRenderJob GetRenderJob() {
       TileSheetRenderJob job = new TileSheetRenderJob();
       job.TileSheet = TileSheet;
