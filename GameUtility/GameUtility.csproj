@@ -49,6 +49,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AdvancedKeyboard.cs" />
     <Compile Include="Animation.cs" />
     <Compile Include="AnimationSet.cs" />
     <Compile Include="Circle.cs" />
