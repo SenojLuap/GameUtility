@@ -55,6 +55,8 @@
     <Compile Include="Collision.cs" />
     <Compile Include="Direction.cs" />
     <Compile Include="IDrawHelper.cs" />
+    <Compile Include="InvisibleRenderJob.cs" />
+    <Compile Include="ListRenderJob.cs" />
     <Compile Include="Misc.cs" />
     <Compile Include="Primitives.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
