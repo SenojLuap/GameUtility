@@ -19,31 +19,37 @@ namespace paujo.GameUtility {
 
     public void Update(KeyboardState state) {
       Keys[] pressed = state.GetPressedKeys();
-      //foreach (KeyValuePair<Keys, AdvancedKeyState> key in States) 
-      foreach (var key in States) {
+      List<Keys> toRemove = new List<Keys>();
+      List<Keys> toRelease = new List<Keys>();
+      foreach (KeyValuePair<Keys, AdvancedKeyState> key in States) {
 	if (!pressed.Contains(key.Key)) {
 	  if (key.Value == AdvancedKeyState.Pressed ||
 	      key.Value == AdvancedKeyState.Down) {
-	    States[key.Key] = AdvancedKeyState.Released;
-	    FireEvent(key.Key);
+	    toRelease.Add(key.Key);
 	  } else if (key.Value == AdvancedKeyState.Released) {
-	    States.Remove(key.Key);
-	  }
-	}
-
-	foreach (var pressedKey in pressed) {
-	  if (!States.ContainsKey(pressedKey) ||
-	      States[pressedKey] == AdvancedKeyState.Released) {
-	    States[pressedKey] = AdvancedKeyState.Pressed;
-	    FireEvent(pressedKey);
-	  } else if (States[pressedKey] == AdvancedKeyState.Pressed) {
-	    States[pressedKey] = AdvancedKeyState.Down;
+	    toRemove.Add(key.Key);
 	  }
 	}
       }
+      foreach (var release in toRelease) {
+	States[release] = AdvancedKeyState.Released;
+	FireEvent(release);
+      }
+      foreach (var remove in toRemove)
+	States.Remove(remove);
+
+      foreach (var key in pressed) {
+	if (!States.ContainsKey(key) ||
+	    States[key] == AdvancedKeyState.Released) {
+	  States[key] = AdvancedKeyState.Pressed;
+	  FireEvent(key);
+	} else if (States[key] == AdvancedKeyState.Pressed) {
+	  States[key] = AdvancedKeyState.Down;
+	}
+      }
     }
-
-
+    
+    
     public void FireEvent(Keys key) {
       if (KeyChanged != null)
 	KeyChanged(this, new AdvancedKeyEventArgs(key, GetKeyState(key)));
