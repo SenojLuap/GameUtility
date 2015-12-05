@@ -11,6 +11,10 @@ namespace paujo.GameUtility {
       get; set; 
     }
 
+    public AdvancedKeyboard() {
+      States = new Dictionary<Keys, AdvancedKeyState>();
+    }
+
     public event EventHandler KeyChanged;
 
     public void Update(KeyboardState state) {
