@@ -137,11 +137,12 @@ namespace paujo.GameUtility {
     }
 
     
-    public void Draw(SpriteBatch spriteBatch, Point pos, int frame, float scale = 1.0f, float depth = 1f) {
+    public void Draw(SpriteBatch spriteBatch, Point pos, int frame, float scale = 1.0f, float depth = 1f, bool atOffset = true) {
       Texture2D texture = GetTexture(TextureKey);
       if (texture == null) return;
       Rectangle srcRect = GetSourceRectangle(frame);
-      Rectangle destRect = GetDestinationRectangle(pos, scale);
+      Point offset = (atOffset ? FrameOffset(frame) : new Point(0, 0));
+      Rectangle destRect = GetDestinationRectangle(pos - offset, scale);
       spriteBatch.Draw(texture, sourceRectangle: srcRect, destinationRectangle: destRect, color: Color.White, layerDepth: depth);
     }
 
