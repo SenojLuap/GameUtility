@@ -27,6 +27,10 @@ namespace TileSheetEditor {
       get; set;
     }
 
+    public string ImageUrl {
+      get; set;
+    }
+
     public MainForm() {
       InitializeComponent();
     }
@@ -50,31 +54,24 @@ namespace TileSheetEditor {
     }
 
     
-    public bool LoadTileSheetFromFile(string path) {
-      string dir = Path.GetDirectoryName(path);
-      Image newImage = Image.FromFile(path, true);
-      if (newImage == null) return false;
-      if (LoadedImage != null) LoadedImage.Dispose();
-      LoadedImage = newImage;
-      string fileName = Path.GetFileNameWithoutExtension(path) + ".jts";
-      TileSheetUrl = Path.Combine(dir, fileName);
+    public bool LoadTileSheetFromFile() {
       try {
 	if (File.Exists(TileSheetUrl)) {
 	  LoadedTileSheet = TileSheet.ReadFromFile(TileSheetUrl);
-	} else {
-	  LoadedTileSheet = new TileSheet();
-	  GraphicsUnit gu = GraphicsUnit.Pixel;
-	  System.Drawing.Rectangle boundRect = System.Drawing.Rectangle.Round(LoadedImage.GetBounds(ref gu));
-	  LoadedTileSheet.FrameWidth = boundRect.Width/2;
-	  LoadedTileSheet.FrameHeight = boundRect.Height/2;
-	  
+	  if (LoadedImage != null) LoadedImage.Dispose();
+	  Image newImage = null;
+	  if (File.Exists(ImageUrl)) newImage = Image.FromFile(ImageUrl, true);
+	  if (newImage != null) {
+	    LoadedImage = newImage;
+	    LoadedTileSheet.TextureKey = Path.GetFileNameWithoutExtension(ImageUrl);
+	  } else {
+	    LoadedImage = null;
+	    LoadedTileSheet.TextureKey = "";
+	  }
+	  UpdateSizeInFrames();
 	}
-	UpdateSizeInFrames();
-	LoadedTileSheet.TextureKey = Path.GetFileNameWithoutExtension(path);
-	//Console.WriteLine(LoadedTileSheet.SizeInFrames + " " + LoadedTileSheet.TileCount
       } catch (Exception e) {
-	System.Console.WriteLine("Exception while reading file: " + path + ": " +
-				 e.Message);
+	System.Console.WriteLine("Exception while reading file: " + e.Message);
 	return false;
       }
       return true;
@@ -83,9 +80,12 @@ namespace TileSheetEditor {
 
     private void openTileSheetBtn_Click(object sender, EventArgs e) {
       if (!EventsEnabled) return;
-      DialogResult result = openTileSheetDialog.ShowDialog();
-      if (result == DialogResult.OK) {
-	if (LoadTileSheetFromFile(openTileSheetDialog.FileName)) {
+      DialogResult tileSheetResult = openTileSheetDialog.ShowDialog();
+      if (tileSheetResult == DialogResult.OK) {
+	TileSheetUrl = openTileSheetDialog.FileName;
+	DialogResult imageResult = openImageDialog.ShowDialog();
+	ImageUrl = (imageResult == DialogResult.OK ? openImageDialog.FileName : "");
+	if (LoadTileSheetFromFile()) {
 	  UpdateControls();
 	} else {
 	  Console.WriteLine("Error Loading");
@@ -150,6 +150,11 @@ namespace TileSheetEditor {
 
     
     public void UpdateSizeInFrames() {
+      if (LoadedImage == null) {
+	LoadedTileSheet.SizeInFrames = new Microsoft.Xna.Framework.Point(1, 1);
+	LoadedTileSheet.TileCount = -1;
+	return;
+      }
       GraphicsUnit gu = GraphicsUnit.Pixel;
       System.Drawing.Rectangle boundRect = System.Drawing.Rectangle.Round(LoadedImage.GetBounds(ref gu));
       LoadedTileSheet.SizeInFrames = new Microsoft.Xna.Framework.Point(boundRect.Width / LoadedTileSheet.FrameWidth, boundRect.Height / LoadedTileSheet.FrameHeight);
@@ -159,7 +164,8 @@ namespace TileSheetEditor {
     
     public void UpdateControls() {
       DisableEvents();
-      tileSheetFile.Text = LoadedTileSheet.TextureKey;
+      tileSheetFile.Text = Path.GetFileName(TileSheetUrl);
+      imageFile.Text = (LoadedImage == null ? "" : Path.GetFileName(ImageUrl));
       frameWidthBox.Value = LoadedTileSheet.FrameWidth;
       frameHeightBox.Value = LoadedTileSheet.FrameHeight;
       defaultOffsetX.Value = LoadedTileSheet.DefaultFrameOffset.X;
@@ -223,5 +229,16 @@ namespace TileSheetEditor {
       EnableEvents();
     }
 
+    private void defaultOffset_ValueChanged(object sender, EventArgs e) {
+      int newDefaultOffsetX = Convert.ToInt32(defaultOffsetX.Value);
+      int newDefaultOffsetY = Convert.ToInt32(defaultOffsetY.Value);
+      Misc.pln("" + newDefaultOffsetX + ", " + newDefaultOffsetY);
+      LoadedTileSheet.DefaultFrameOffset = new Microsoft.Xna.Framework.Point(newDefaultOffsetX,
+									     newDefaultOffsetY);
+    }
+
+    private void newTileSheetBtn_Click(object sender, EventArgs e) {
+      // TODO
+    }
   }
 }
